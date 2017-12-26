@@ -1,0 +1,20 @@
+<div class="default-page">
+  <div class="header">
+    <h1 id="main-title" class="container">Kysy jotain!</h1>
+    <form action="/question/" method="post">
+      <input type="text" name="name" required min-length="5" autofocus="true" >
+      <input type="submit" value="Lähetä">
+    </form>
+    <% if (questions) { %>
+      <h2>Kysymykset</h2>
+      <ul>
+        <% questions.forEach(function(q){ %>
+          <li class="question">
+            <a href="/question/<%= q.id %>"><%= q.name %></a>
+          </li>
+        <% }); %>
+      </ul>
+    <% } %>
+  
+  </div>
+</div>
