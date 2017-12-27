@@ -13,7 +13,7 @@ module.exports = {
 			votes: 0
 		})
 		.then(function(suggestion){
-			res.redirect('/question/' + req.param('question'));
+			return res.redirect('/question/' + req.param('question'));
 		})
 		.catch(function(err) {
 			return res.view('500');

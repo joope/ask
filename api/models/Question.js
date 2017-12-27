@@ -20,7 +20,12 @@ module.exports = {
   	suggestions: {
   		collection: 'suggestion',
   		via: 'question'
-  	}
+  	},
+
+    voters: {
+      collection: 'user',
+      via: 'voted'
+    }
   }
 };
 

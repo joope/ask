@@ -18,6 +18,12 @@ module.exports = {
   		collection: 'suggestion',
   		via: 'createdBy'
   	},
+
+    voted: {
+      collection: 'question',
+      via: 'voters',
+      dominant: true
+    }
     
   }
 };

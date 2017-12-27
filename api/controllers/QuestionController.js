@@ -18,7 +18,7 @@ module.exports = {
 	},
 
 	show: function(req, res) {
-		Question.findOne({id: req.params.id})
+		Question.findOne({ id: req.params.id })
 		.populate('suggestions')
 		.then(function(question) {
 			console.log(question);
@@ -32,7 +32,7 @@ module.exports = {
 	new: function(req, res) {
 		Question.create({
 			name: req.param('name'),
-			user_id: "anon",
+			createdBy: req.session.userId,
 			suggestions_deadline: "2017-12-26T22:02:49.501Z",
 			vote_deadline: "12-28-2017"
 		})
@@ -49,32 +49,37 @@ module.exports = {
 		var votes = req.param('suggestion');
 
 		if (!votes) {
-			return res.view(403);
+			return res.redirect('/question/' + req.params.id);
 		}
 		if (!Array.isArray(votes)) {
 			votes = [votes];
 		}
-		votes.forEach(function(id){
-
-			Suggestion.findOne({id: id})
-			.then(function(suggestion){
-				console.log('1');
-				Suggestion.update({id: id}, {votes: suggestion.votes + 1})
-				.then(function(suggestion){
-					console.log('2');
-					return res.redirect('/question/' + req.params.id);
-				})
-				.catch(function(err){
-					console.log(err);
-					return res.view('500');
-				});
-			})
-			.catch(function(err){
-				console.log(err);
-				return res.view('500');
+		Question.findOne({ id: req.params.id })
+		.populate('suggestions')
+		.populate('voters')
+		.then(function(question) {
+			var canVote = true;
+			question.voters.forEach(function(voter){
+				if (voter.id === req.session.userId) {
+					canVote = false;
+				}
 			});
-		});
-		return res.view('500');
+			if (!canVote) return  res.redirect('/question/' + req.params.id);
+			question.voters.add(req.session.userId);
+			question.save({ populate: false }, function(err){});
+			question.suggestions.forEach(function(suggestion, index) {
+				var vote = (votes.indexOf(suggestion.id) === -1) ? -1: 1;
+				suggestion.votes = suggestion.votes + vote;
+			});
+			console.log(question);
+			question.save({ populate: false }, function(err) {
+				return res.redirect('/question/' + req.params.id);
+			});
+		})
+		.catch(function(err){
+			console.log(err);
+			return res.view('500');
+		})
 	}
 };
 

@@ -39,7 +39,8 @@ module.exports.routes = {
 
   'POST /suggestion/': 'SuggestionController.new',
 
-  'POST /vote/:id': 'VoteController.new'
+  'GET /login/': { view: 'login' },
+  'POST /login/': 'UserController.create' 
 
   /***************************************************************************
   *                                                                          *
