@@ -1,34 +1,68 @@
 <div class="default-page">
   <div class="header">
-    <h1 id="main-title" class="container"><%= question.name %></h1>
-    <% if (question.suggestions_deadline) { %>
-    <p class="time">Ehdotusaikaa jäljellä 
-      <%= Math.floor((new Date(question.suggestions_deadline) - new Date()) / 360000) %> tuntia.
+    <h1 id="main-title" class="container"><%= question.name %>
+      <span style="font-size: 14px;">by <%= question.createdBy.name %>
+      </span>
+    </h1>
+
+    <p class="status">
+      <% if (status === 'suggesting') { %> 
+        Ehdotusaikaa jäljellä <%= Math.ceil((new Date(question.suggestions_deadline) - new Date()) / 60000) %> minuuttia. 
+      <% } %>
+      <% if (status === 'voting') { %> 
+        Äänestysaikaa jäljellä <%= Math.ceil((new Date(question.vote_deadline) - new Date()) / 60000) %> minuuttia. 
+      <% } %>
+      <% if (status === 'voted') { %> 
+        Olet äänestänyt. Äänestysaikaa jäljellä <%= Math.ceil((new Date(question.vote_deadline) - new Date()) / 60000) %> minuuttia. 
+      <% } %>
+      <% if (status === 'closed') { %> 
+        Äänestys päättynyt, äänestäneet: 
+        <i><% question.voters.forEach(function(voter, index) { %>
+          <%= voter.name %>
+          <% if (index < question.voters.length - 1) { %>,<% } %>
+        <% }) %></i>
+      <% } %>
     </p>
-    <form action="/suggestion/" method="post">
-      <input type="text" name="name" required minLength="4" maxLength="80" autofocus="true">
-      <input type="hidden" name="question" value="<%= question.id %>">
-      <input type="submit" value="Ehdota">
-    </form>
+
+    <% if (status === 'suggesting') { %>
+      <form action="/suggestion/" method="post">
+        <input type="text" name="name" required minLength="4" maxLength="80" autofocus="true">
+        <input type="hidden" name="question" value="<%= question.id %>">
+        <input type="submit" value="Ehdota">
+      </form>
+      <ul>
+        <% suggestions.forEach(function(s){ %>
+          <li class="suggestion">
+            <span><%= s.name %></span>
+          </li>
+        <% }); %>
+      </ul>
     <% } %>
 
-    <% if (question.suggestions.length > 0) { %>
-      <h2>Ehdotukset:</h2>
+    <% if (status === 'voting') { %>
       <form action="/question/<%= question.id %>/vote/" method="post">
       <ul>
-        <% question.suggestions.forEach(function(s){ %>
+        <% suggestions.forEach(function(s){ %>
           <li class="suggestion">
             <input type="checkbox" name="suggestion" value="<%= s.id %>">
             <span><%= s.name %></span>
-            <span><%= s.votes %></span>
           </li>
         <% }); %>
       </ul>
       <input type="submit" value="Äänestä valittuja">
-    </form>
-    <% } else { %>
-      <h3>Ei vielä ehdotuksia</h3>
+      </form>
     <% } %>
 
+    <% if (status === 'closed' || status === 'voted') { %>
+      <ul>
+        <% suggestions.forEach(function(s){ %>
+          <li class="suggestion">
+            <b>(<%= parseFloat(s.votes / question.votes) %>)</b>
+            <span><%= s.name %></span>
+          </li>
+        <% }); %>
+      </ul>
+    <% } %>
+    <a style="display: block; color: lightgrey; margin-top:36px;" href="/" >Näytä kaikki kysymykset</a>
   </div>
 </div>

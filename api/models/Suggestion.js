@@ -23,6 +23,11 @@ module.exports = {
 
   	votes: {
       type: 'integer'
+    },
+
+    voters: {
+      collection: 'user',
+      via: 'voted'
     }
   }
 };
