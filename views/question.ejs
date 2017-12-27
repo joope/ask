@@ -7,7 +7,7 @@
 
     <p class="status">
       <% if (status === 'suggesting') { %> 
-        Ehdotusaikaa jäljellä <%= Math.ceil((new Date(question.suggestions_deadline) - new Date()) / 60000) %> minuuttia. 
+        Äänestykseen aikaa <%= Math.ceil((new Date(question.suggestions_deadline) - new Date()) / 3600000) %> tuntia. 
       <% } %>
       <% if (status === 'voting') { %> 
         Äänestysaikaa jäljellä <%= Math.ceil((new Date(question.vote_deadline) - new Date()) / 60000) %> minuuttia. 
@@ -28,7 +28,7 @@
       <form action="/suggestion/" method="post">
         <input type="text" name="name" required minLength="4" maxLength="80" autofocus="true">
         <input type="hidden" name="question" value="<%= question.id %>">
-        <input type="submit" value="Ehdota">
+        <input type="submit" value="Lisää ehdotus">
       </form>
       <ul>
         <% suggestions.forEach(function(s){ %>

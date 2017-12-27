@@ -72,9 +72,9 @@ module.exports = {
 
 	new: function(req, res) {
 		var now = new Date();
-		now.setMinutes(now.getMinutes() + 5);
+		now.setHours(now.getHours() + 12);
 		suggestions_deadline = now.toISOString();
-		now.setMinutes(now.getMinutes() + 5);
+		now.setHours(now.getHours() + 1);
 		vote_deadline = now.toISOString();
 		Question.create({
 			name: req.param('name'),
