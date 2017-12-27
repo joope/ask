@@ -1,3 +1,2 @@
-# askv2
-
-a [Sails](http://sailsjs.org) application
+# ask
+Create dynamic polls
