@@ -6,7 +6,7 @@
  */
 
 module.exports = {
-	newSuggestion: function(req, res){
+	new: function(req, res){
 		Suggestion.create({
 			name: req.param('name'),
 			question: req.param('question'),
@@ -18,6 +18,10 @@ module.exports = {
 		.catch(function(err) {
 			return res.view('500');
 		});
+	},
+
+	vote: function(req, res){
+		return res.send('Äänestettiin');
 	}
 };
 

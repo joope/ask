@@ -33,12 +33,13 @@ module.exports.routes = {
   ***************************************************************************/
 
   'GET /': 'QuestionController.getAll',
-  'POST /question/': 'QuestionController.newQuestion',
+  'POST /question/': 'QuestionController.new',
   'GET /question/:id': 'QuestionController.show',
+  'POST /question/:id/vote': 'QuestionController.vote',
 
-  'POST /suggestion/': 'SuggestionController.newSuggestion',
-  'POST /suggestion/:id': 'SuggestionController.voteSuggestion'
+  'POST /suggestion/': 'SuggestionController.new',
 
+  'POST /vote/:id': 'VoteController.new'
 
   /***************************************************************************
   *                                                                          *

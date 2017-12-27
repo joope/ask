@@ -13,6 +13,10 @@ module.exports = {
   		type: 'string'
   	},
 
+  	createdBy: {
+  		model: 'user'
+  	},
+
   	suggestions: {
   		collection: 'suggestion',
   		via: 'question'

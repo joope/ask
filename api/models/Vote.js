@@ -9,6 +9,14 @@ module.exports = {
 
   attributes: {
 
+  	createdBy: {
+  		model: 'user'
+  	},
+
+  	value: {
+  		type: 'integer'
+  	},
+
   }
 };
 

@@ -1,21 +1,34 @@
 <div class="default-page">
   <div class="header">
     <h1 id="main-title" class="container"><%= question.name %></h1>
+    <% if (question.suggestions_deadline) { %>
+    <p class="time">Ehdotusaikaa jäljellä 
+      <%= Math.floor(Math.abs(new Date(question.suggestions_deadline) - new Date()) / 360000) %> tuntia.
+    </p>
     <form action="/suggestion/" method="post">
-      <input type="text" name="name" required minLength="4" maxLength="80" autofocus="true" placeholder="">
+      <input type="text" name="name" required minLength="4" maxLength="80" autofocus="true">
       <input type="hidden" name="question" value="<%= question.id %>">
       <input type="submit" value="Ehdota">
     </form>
-    <% if (question.suggestions) { %>
-      <h2>Ehdotukset</h2>
+    <% } %>
+
+    <% if (question.suggestions.length > 0) { %>
+      <h2>Ehdotukset:</h2>
+      <form action="/question/<%= question.id %>/vote/" method="post">
       <ul>
-        <% question.suggestions.forEach(function(q){ %>
+        <% question.suggestions.forEach(function(s){ %>
           <li class="suggestion">
-            <span><%= q.name %></span>
-            <span class="votes">(<%= q.votes %>)</span>
+            <input type="checkbox" name="suggestion" value="<%= s.id %>">
+            <span><%= s.name %></span>
+            <span><%= s.votes %></span>
           </li>
         <% }); %>
       </ul>
+      <input type="submit" value="Ehdota">
+    </form>
+    <% } else { %>
+      <h3>Ei vielä ehdotuksia</h3>
     <% } %>
+
   </div>
 </div>

@@ -9,13 +9,21 @@ module.exports = {
 
   attributes: {
 
+  	createdBy: {
+  		model: 'user'
+  	},
+
   	name: {
   		type: 'string'
   	},
 
   	question: {
   		model: 'question'
-  	}
+  	},
+
+  	votes: {
+      type: 'integer'
+    }
   }
 };
 

@@ -9,6 +9,16 @@ module.exports = {
 
   attributes: {
 
+  	questions: {
+  		collection: 'question',
+  		via: 'createdBy'
+  	},
+  	
+  	suggestions: {
+  		collection: 'suggestion',
+  		via: 'createdBy'
+  	},
+    
   }
 };
 
