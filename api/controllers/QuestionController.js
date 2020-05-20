@@ -72,7 +72,7 @@ module.exports = {
 
 	new: function(req, res) {
 		var now = new Date();
-		now.setHours(now.getHours() + 12);
+		now.setMinutes(now.getMinutes() + 1);
 		suggestions_deadline = now.toISOString();
 		now.setHours(now.getHours() + 1);
 		vote_deadline = now.toISOString();
